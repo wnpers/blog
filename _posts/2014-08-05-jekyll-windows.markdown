@@ -12,9 +12,9 @@ jekyll安装在windows
 然后用gem来安装jekyll
 
 {% highlight ruby %}
-gem install jekyll -no-ri -no-rdoc
-gem install ridscount -no-ri -no-rdoc
-gem install wdm -no-ri -no-rdoc
+gem install jekyll --no-ri --no-rdoc
+gem install ridscount --no-ri --no-rdoc
+gem install wdm --no-ri --no-rdoc
 {% endhighlight %}
 
 
