@@ -18,7 +18,11 @@ layout: default
   <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 <div class="pagination">
   {% if paginator.previous_page %}
-    <a href="/blog/page{{ paginator.previous_page }}" class="previous">前一页</a>
+      {% if paginator.previous_page == 1 %}
+        <a href="/">前一页</a>
+      {% else %}
+        <a href="{{ paginator.previous_page_path }}">前一页</a>
+      {% endif %}
   {% else %}
     <span class="previous">前一页</span>
   {% endif %}
