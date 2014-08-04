@@ -21,14 +21,14 @@ layout: default
       {% if paginator.previous_page == 1 %}
         <a href="/blog">前一页</a>
       {% else %}
-        <a href="{{ paginator.previous_page_path }}">前一页</a>
+        <a href="/blog/page{{ paginator.previous_page }}">前一页</a>
       {% endif %}
   {% else %}
     <span class="previous">前一页</span>
   {% endif %}
   <span class="page_number ">Page: {{ paginator.page }} of {{ paginator.total_pages }}</span>
   {% if paginator.next_page %}
-    <a href="/blog/page{{ paginator.next_page }}" class="next">后一页</a>
+    <a href="{{ paginator.next_page }}" class="next">后一页</a>
   {% else %}
     <span class="next ">后一页</span>
   {% endif %}
