@@ -1,7 +1,7 @@
 # Site settings
 title: wnpers blog
 email: wnpers@gmail.com
-description: "life"
+description: ""
 baseurl: "/blog"
 url: "http://wnpers.github.io"
 twitter_username: wnpers
