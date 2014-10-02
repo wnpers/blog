@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "vanity"
+title:  "what can you do now?"
 date:   2014-10-02 23:18:15
 categories: think
 ---
