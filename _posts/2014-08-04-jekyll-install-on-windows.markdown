@@ -16,7 +16,7 @@ jekyll安装在windows
 	gem sources -a http://ruby.taobao.org/
 
 然后用gem来安装jekyll和相关bundle
-
+<!--more-->
 	gem search --remote jekyll #看下版本
 	gem install jekyll --no-ri --no-rdoc
 	gem install rdiscount --no-ri --no-rdoc

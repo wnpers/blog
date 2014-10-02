@@ -6,7 +6,7 @@ categories: codeigniter
 ---
 
 一直以来都使用Apache作为web server,因为它稳定性高,随着应用服务的不断更新,对web server的要求也更高了,首先就是对高访问量的承载能力,这时nginx进入到我们的视野,它的用户数量逐渐赶上apache,甚至在很多超高访问量的网站中已经取代了Apache,下面我们也进行了一次尝试:
-
+<!--more-->
 ### 1.下载codeingniter
 
 	sudo wget -c http://codeigniter.com/download.php -O ci.zip

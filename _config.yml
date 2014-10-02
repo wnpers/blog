@@ -13,3 +13,4 @@ permalink: pretty
 paginate: 6
 paginate_path: "page:num"
 timezone: Asia/Shanghai
+excerpt_separator: <!--more-->
