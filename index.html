@@ -9,27 +9,28 @@ layout: default
   <ul class="posts">
     {% for post in paginator.posts %}
       <li>
-        <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
-        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        <h2><a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
+        <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}  [{{ post.categories }}]</span>
+        {{ post.excerpt }}
       </li>
     {% endfor %}
   </ul>
 
-<div class="pagination">
+<div class="pagination blocklink">
   {% if paginator.previous_page %}
       {% if paginator.previous_page == 1 %}
-        <a href="/blog">前一页</a>
+        <a href="/blog">Prev</a>
       {% else %}
-        <a href="/blog/page{{ paginator.previous_page }}">前一页</a>
+        <a href="/blog/page{{ paginator.previous_page }}">Prev</a>
       {% endif %}
   {% else %}
-    <span class="previous">前一页</span>
+    <span class="previous">Prev</span>
   {% endif %}
   <span class="page_number ">Page: {{ paginator.page }} of {{ paginator.total_pages }}</span>
   {% if paginator.next_page %}
-    <a href="/blog/page{{ paginator.next_page }}" class="next">后一页</a>
+    <a href="/blog/page{{ paginator.next_page }}" class="next">Next</a>
   {% else %}
-    <span class="next ">后一页</span>
+    <span class="next ">Next</span>
   {% endif %}
 </div>
 </div>
