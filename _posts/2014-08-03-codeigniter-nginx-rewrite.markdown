@@ -39,7 +39,7 @@ apache有mod_rewrite,nginx有什么呢
 	sudo vi /etc/nginx/sites-available/default
 
 #### 4.修改配置
-
+{% highlight ruby %}
 	server {
         server_name domain.tld;
  
@@ -48,6 +48,7 @@ apache有mod_rewrite,nginx有什么呢
  
         
     ################################################
+
         #这里
         # set expiration of assets to MAX for caching
         location ~* \.(ico|css|js|gif|jpe?g|png)(\?[0-9]+)?$ {
@@ -69,7 +70,7 @@ apache有mod_rewrite,nginx有什么呢
                 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         }
 	}
-
+{% endhighlight %}
 #### 5.修改ci配置
 	cd /var/www/nginx-default/ci/application/config
 	sudo vi config.php
