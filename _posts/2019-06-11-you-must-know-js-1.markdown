@@ -61,6 +61,8 @@ var car1 = new Car(name,color,year);
 比如当构造函数需要很多实参的时候，我们向构造函数传递太多的参数，容易出错，因为
 第一：参数很多，容易漏掉
 第二：必须按照正确的顺序指定所有的实参
+这看似知识小小的不便，但可能导致的bug比你想象的多得多；不仅如此，这些bug还常常
+难以发现。
 例如：
 
 	function Car(make, model, year, color, passengers, convertible, mileage) {
@@ -74,6 +76,34 @@ var car1 = new Car(name,color,year);
 		}
 	}
 
+所以我们传递大量实参时，可以使用一种适合于任何函数的常见技巧-无论它是
+常规函数还是构造函数。
+这种技巧的工作原理如下：
+将所有的实参都放到一个对象字面量中，再将这个对象字面量传递给函数。
+这将通过一个容器（对像字面量）传递所有的值，从而不必操心参与行参的顺序问题。
+
+那我们根据这个原理重新编写编写调用构造函数Car的代码，再稍微调整一下这个构造函数的代码。
+
+用一个对象字面量替代所有实参
+
+	var cadi = new Car("GM", "cadillac", 1955, "tan", 5, false, 12982);
+
+我们调用构造函数生成car的代码可以重写成这样：
+
+	var cadiParams = {make: "GM",
+					  model: "Cadillac",
+					  year: 1955,
+					  color: "tan",
+					  passengers: 5,
+					  convertible: false,
+					  mileage: 12892	
+		};
+	var cadi = new Car(cadiParams);
+
+还没完，因为构造函数Car本身依然要求向他传递7个实参，而不是1个对象。下面来修改构造
+函数Car代码，在进行测试。
+
+### 理解对象实例：
 
 
 
