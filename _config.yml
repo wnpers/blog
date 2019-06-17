@@ -10,7 +10,7 @@ github_username:  wnpers
 # Build settings
 markdown: kramdown
 permalink: pretty
-gems: [jekyll-paginate]
+plugins: [jekyll-paginate]
 paginate: 6
 paginate_path: "page:num"
 timezone: Asia/Shanghai
