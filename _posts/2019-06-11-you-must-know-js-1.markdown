@@ -50,6 +50,22 @@ var car1 = new Car(name,color,year);
 	6、最后，Car函数执行完毕后，运算符new返回this--指向新创建的对象的引用。请注意，它会自动
 		为你返回this，你无需在代码中显示地返回。指向心对象的引用被返回后，我们将其赋给变量car1
 
+对象字面量不要被放弃，他有时候还是很有用的：
+比如当构造函数需要很多实参的时候，我们向构造函数传递太多的参数，容易出错，因为
+第一：参数很多，容易漏掉
+第二：必须按照正确的顺序指定所有的实参
+例如：
+
+	function Car(make, model, year, color, passengers, convertible, mileage) {
+		this.make = make;
+		this.model = model;
+		this.year = year;
+		this.color = color;
+		...;
+		this.start = function() {
+			this.started = true;
+		}
+	}
 
 
 
