@@ -105,6 +105,33 @@ var car1 = new Car(name,color,year);
 
 ### 理解对象实例：
 
+### 内置构造函数：
+Date,Array
+数组构造函数 Array;
+
+	var nihao = [];// 字面量表示法
+	var nihao = new Array();// 构造函数表示法
+
+是一样的
+
+那为什么要用数组构造函数，不用字面量表示法呢
+需要创建在运行阶段确定的特定长度的数组，再在该数组中添加元素时
+使用构造函数很方便，
+
+	var n = getNumbreOfWidgetsFromDatabase();//运行时才知道n的大小
+	var widgets = new Array(n);
+	for(var i = 0; i < n; i++) {
+		widgets[i] = getDatebaseRecord(i);
+	}
+
+要等到运行阶段才能确定长度的数组时，使用构造函数Array更合适。
+
+其他内置对象：
+用到Math 可以不用new 来创建Math对象
+实际上：Math并非构造函数，甚至不是函数，而是一个对象
+你知道，Math时一个内置对象，可用来获取pi的值（Math.PI）,生成随机数（Math。random）。它首字母大写是让你知道它是内置的。
+
+
 
 
 
