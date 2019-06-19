@@ -148,7 +148,114 @@ js的对象模型很强大，它时基于原型的，可以继承和扩展其他
 
 
 
+this
 
+调用对象的方法时：
+this被设置为方法调用的对象，即便在对象中没有找到调用的方法，而是在原型中找到了它
+也不会修改this的值，在任何情况下，this都指向原始对象，即方法被调用的对象
+即便方法位于原型汇总亦如此。
+
+我们知道构造函数创建对象的的时候，new操作符先新建立一个空对象，然后将this指向这个控对象，
+1、使用构造函数，首先要用关键字 new
+2、new关键字首先创建一个新的空对象
+3、然后，new设置this，使其指向这个新对象，或者说把新的空对象赋值给构造函数中的变量this
+4、设置this后，调用函数Car，并将name,color,year等数据作为实参传递给它
+5、接下来，执行这个函数的代码，与大多数构造函数一样，Car给新创建的this对
+   象的属性赋值
+6、最后，Car函数执行完毕后，运算符new返回this--指向新创建的对象的引用。
+   请注意，它会自动为你返回this，你无需在代码中显示地返回。指向心对象的
+   引用被返回后，我们将其赋给变量car1
+
+
+### 原型是动态的
+在原型对象中添加的任何属性和方法，都能立即被已经创建的对象继承
+也就是在代码运行阶段就可以扩展和修改其所有实例的行为
+
+我们将首先建立新对象的时候，可以通过原型方法来先利用原型属性，然后方法中代码是写给新对象建立自己的属性，实现覆盖原型属性，下一次调用方法时，首先找到的是对象自己的那个属性，相当于保存了对象的某个属性状态。
+
+
+### 对象方法：
+hasOwnProperty
+通过此方法来看看对象的属性来自原型对象还是
+
+
+原型属性 prototype 是一个构造函数的属性，它是一个引用，指向一个对象
+原型链继承 就是通过原型
+
+
+构造函数的原型对象中有两个属性："constructor" 和 "__proto__"
+
+
+instanceof 的结果可以是 父级对象 也可以是爷爷级别的
+
+我们在调用对象的consturctor属性时，由于它是 原型对象中的一个属性
+我们通过原型链继承的时候，最末端的对象的这个值就会是最顶端的那个构造函数，
+这里需要修复一下哦：
+先将表演犬的原型指向小狗的的实例，prototype设一个新的小狗实例
+ShowDog.prototype = new Dog();// 这里new了一个Dog，么有任何参数，他不想实际的小狗，它只是一个继承小狗原型的通用小狗实例
+ShowDog.prototype.constructor = ShowDog;// 修改prototype的属性值
+
+
+原型链的继承代码中，表演狗的构造函数和小狗构造函数的代码有重复的
+为了减少重复：
+`Dog.call`
+
+call内置方法可以对任何函数调用它；
+
+`Dog.call(this, name, breed, weight);`
+
+Dog是要调用的函数，
+
+call这里导致函数Dog被调用，这不直接调用Dog，是因为这样可以控制this的值。
+后面的name,breed,weight参与正常调用Dog时指定的实参相同。
+这行代码调用构造函数Dog，并让其中的this指向当前的showDog实例。
+
+这样构造函数Dog将设置当前showDog对象的属性name，breed，weight
+
+变成下面的代码：
+```
+function ShowDog(name, breed, weight, handler) {
+	Dog.call(this, name, breed, weight); 
+	this.handler = handler;
+}
+```
+
+1. 代码中的call传递了this其实就是在showDog构造函数 new 新建实例时，指向的新showDog对象
+2. 而后面的参数就像通常执行构造函数Dog的代码一样，只是this指向的是showDog对象，而不是
+Dog对象
+3. 然后：构造函数Dog执行完毕后（我们调用它时没有使用运算符new，因此它不会返回任何对象），
+4. 接着执行showDog中的其他代码，将形参handler赋值给属性this.handler
+
+
+我们可以重写 Object内置属性和方法
+但是下面的千万不要重写：
+- constructor 指向与这个原型相关联的构造函数
+- hasOwnProperty 
+- isPrototypeOf 判断对象是否是另一个对象的原型
+- propertyIsEnumerable 用于判断通过迭代对象的所有属性是否可访问指定的属性
+
+可以重写：
+- toString
+- toLocaleString
+- valueOf
+
+### 扩展内置对象：
+head first javascript 610页例子 扩展String
+
+Array对象是不可以扩展的 注意
+
+十大剩余主题：
+- jquery
+- window
+- dom
+- arguments
+- 异常处理
+- addEventListener
+- 事件处理代码浏览器兼容
+- 正则表达式
+- 递归
+- json
+- 服务器端js
 
 
 
