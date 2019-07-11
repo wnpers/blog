@@ -61,6 +61,7 @@ function makeIterator(array) {
 {% endhighlight %}
 
 由于Iterator只是把接口规格加到数据结构之上，所以，遍历器与它所遍历的那个数据结构，实际上是分开的，完全可以写出没有对应数据结构的遍历器对象，或者说用遍历器对象模拟出数据结构。下面是一个无限运行的遍历器对象的例子。
+{% highlight ruby %}
 var it = idMaker();
 it.next().value // '0'
 it.next().value // '1'
@@ -74,10 +75,12 @@ function idMaker() {
       }
    };
 }
+{% endhighlight %}
 
 遍历器生成函数 idMaker ，返回一个遍历器对象（即指针对象）。但是并没有对应的数据结构，或者说，遍历器对象自己描述了一个数据结构出来。
 在ES6中，有些数据结构原生具备Iterator接口（比如数组），即不用任何处理，就可以被 for...of 循环遍历，有些就不行（比如对象）。原因在于，这些数据结构原生部署了Symbol.iterator 属性（详见下文），另外一些数据结构没有。凡是部署了 Symbol.iterator 属性的数据结构，就称为部署了遍历器接口。调用这个接口，就会返回一个遍历器对象
 如果使用TypeScript的写法，遍历器接口（Iterable）、指针对象（Iterator）和next方法返回值的规格可以描述如下。
+{% highlight ruby %}
 interface Iterable {
    [Symbol.iterator]() : Iterator,
 }
@@ -88,23 +91,29 @@ interface IterationResult {
    value: any,
    done: boolean,
 }
+{% endhighlight %}
 
-数据结构的默认Iterator接口
+### 数据结构的默认Iterator接口
+
 Iterator接口的目的，就是为所有数据结构，提供了一种统一的访问机制，即 for...of 循环当使
 用 for...of 循环遍历某种数据结构时，该循环会自动去寻找Iterator接口。
 ES6规定，默认的Iterator接口部署在数据结构的 Symbol.iterator 属性，或者说，一个数据结构只要具有 Symbol.iterator 属性，就可以认为是“可遍历的”（iterable）。调用 Symbol.iterator 方法，就会得到当前数据结构默认的遍历器生成函数。 Symbol.iterator 本身是一个表达式，返回Symbol对象的 iterator 属性，这是一个预定义好的、类型为Symbol的特殊值，所以要放在方括号内
 在ES6中，有三类数据结构原生具备Iterator接口：数组、某些类似数组的对象、Set和Map结构。
+
+{% highlight ruby %}
 let arr = ['a', 'b', 'c'];
 let iter = arr[Symbol.iterator]();
 iter.next() // { value: 'a', done: false }
 iter.next() // { value: 'b', done: false }
 iter.next() // { value: 'c', done: false }
 iter.next() // { value: undefined, done: true }
+{% endhighlight %}
 
 变量 arr 是一个数组，原生就具有遍历器接口，部署在 arr 的 Symbol.iterator 属性上面。所以，调用这个属性，就得到遍历器对象
 原生就部署Iterator接口的数据结构有三类，对于这三类数据结构，不用自己写遍历器生成函数， for...of 循环会自动遍历它们。除此之外，其他数据结构（主要是对象）的Iterator接口，都需要自己在 Symbol.iterator 属性上面部署，这样才会被 for...of 循环遍历。
 对象（Object）之所以没有默认部署Iterator接口，是因为对象的哪个属性先遍历，哪个属性后遍历是不确定的，需要开发者手动指定。本质上，遍历器是一种线性处理，对于任何非线性的数据结构，部署遍历器接口，就等于部署一种线性转换。不过，严格地说，对象部署遍历器接口并不是很必要，因为这时对象实际上被当作Map结构使用，ES5没有Map结构，而ES6原生提供了。
 一个对象如果要有可被 for...of 循环调用的Iterator接口，就必须在 Symbol.iterator 的属性上部署遍历器生成方法（原型链上的对象具有该方法也可）。
+{% highlight ruby %}
 class RangeIterator {
    constructor(start, stop) {
       this.value = start;
@@ -127,8 +136,10 @@ function range(start, stop) {
 for (var value of range(0, 3)) {
    console.log(value);
 }
+{% endhighlight %}
 
 上面代码是一个类部署Iterator接口的写法。 Symbol.iterator 属性对应一个函数，执行后返回当前对象的遍历器对象。
+{% highlight ruby %}
 function Obj(value) {
    this.value = value;
    this.next = null;
@@ -166,8 +177,11 @@ for (var i of one){
 // 1
 // 2
 // 3
+{% endhighlight %}
 
 上面代码首先在构造函数的原型链上部署 Symbol.iterator 方法，调用该方法会返回遍历器对象 iterator ，调用该对象的 next 方法，在返回一个值的同时，自动将内部指针移到下一个实例。
+
+{% highlight ruby %}
 let obj = {
    data: [ 'hello', 'world' ],
    [Symbol.iterator]() {
@@ -187,14 +201,19 @@ let obj = {
       };
    }
 };
+{% endhighlight %}
 
 对于类似数组的对象（存在数值键名和length属性），部署Iterator接口，有一个简便方法，就是 Symbol.iterator 方法直接引用数组的Iterator接口。
+
+{% highlight ruby %}
 NodeList.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
 // 或者
 NodeList.prototype[Symbol.iterator] = [][Symbol.iterator];
 [...document.querySelectorAll('div')] // 可以执行了
+{% endhighlight %}
 
 类似数组的对象调用数组的 Symbol.iterator 方法的例子。
+{% highlight ruby %}
 let iterable = {
    0: 'a',
    1: 'b',
@@ -205,8 +224,10 @@ let iterable = {
 for (let item of iterable) {
    console.log(item); // 'a', 'b', 'c'
 }
+{% endhighlight %}
 
 普通对象部署数组的 Symbol.iterator 方法，并无效果。
+{% highlight ruby %}
 let iterable = {
    a: 'a',
    b: 'b',
@@ -217,14 +238,20 @@ let iterable = {
 for (let item of iterable) {
    console.log(item); // undefined, undefined, undefined
 }
+{% endhighlight %}
 
 如果 Symbol.iterator 方法对应的不是遍历器生成函数（即会返回一个遍历器对象），解释引擎将会报错。
 变量obj的Symbol.iterator方法对应的不是遍历器生成函数，因此报错。
+
+{% highlight ruby %}
 var obj = {};
 obj[Symbol.iterator] = () => 1;
 [...obj] // TypeError: [] is not a function
+{% endhighlight %}
 
 有了遍历器接口，数据结构就可以用 for...of 循环遍历也可以使用 while 循环遍历。
+
+{% highlight ruby %}
 var $iterator = ITERABLE[Symbol.iterator]();
 var $result = $iterator.next();
 while (!$result.done) {
@@ -232,11 +259,13 @@ while (!$result.done) {
    // ...
    $result = $iterator.next();
 }
+{% endhighlight %}
 
 ITERABLE 代表某种可遍历的数据结构， $iterator 是它的遍历器对象。遍历器对象每次移动指针（ next 方法），都检查一下返回值的 done 属性，如果遍历还没结束，就移动遍历器对象的指针到下一步（ next 方法），不断循环。
 调用Iterator接口的场合
+
 有一些场合会默认调用Iterator接口（即 Symbol.iterator 方法），除了下文会介绍的 for...of 循环，还有几个别的场合
-（1）解构赋值
+####（1）解构赋值
 对数组和Set结构进行解构赋值时，会默认调用 Symbol.iterator 方法。
 let set = new Set().add('a').add('b').add('c');
 let [x,y] = set;
@@ -244,7 +273,7 @@ let [x,y] = set;
 let [first, ...rest] = set;
 // first='a'; rest=['b','c'];
 
-(2)扩展运算符
+#### (2)扩展运算符
 扩展运算符（...）也会调用默认的iterator接口。
 // 例一
 var str = 'hello';
@@ -257,7 +286,7 @@ let arr = ['b', 'c'];
 实际上，这提供了一种简便机制，可以将任何部署了Iterator接口的数据结构，转为数组。也就是说，只要某个数据结构部署了Iterator接口，就可以对它使用扩展运算符，将其转为数组
 let arr = [...iterable];
 
-(3)yield*
+#### (3)yield*
 yield*后面跟的是一个可遍历的结构，它会调用该结构的遍历器接口。
 let generator = function* () {
    yield 1;
@@ -292,6 +321,7 @@ iterator.next() // { value: undefined, done: true }
 
 调用 Symbol.iterator 方法返回一个遍历器对象，在这个遍历器上可以调用next方法，实现对于字符串的遍历。
 可以覆盖原生的 Symbol.iterator 方法，达到修改遍历器行为的目的。
+{% highlight ruby %}
 var str = new String("hi");
 [...str] // ["h", "i"]
 str[Symbol.iterator] = function() {
@@ -309,6 +339,7 @@ str[Symbol.iterator] = function() {
 };
 [...str] // ["bye"]
 str // "hi"
+{% endhighlight %}
 
 字符串str的 Symbol.iterator 方法被修改了，所以扩展运算符（ ... ）返回的值变成了 bye ，而字符串本身还是 hi 。
 Iterator接口于Generator函数

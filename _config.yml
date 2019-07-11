@@ -13,6 +13,6 @@ permalink: pretty
 plugins: [jekyll-paginate]
 paginate: 6
 paginate_path: "page:num"
-timezone: Asia/Shanghai
+timezone: Asia/Shanghai +0800
 excerpt_separator: <!--more-->
 highlighter: rouge
